@@ -20,7 +20,15 @@ namespace Trivia
             aGame.add("Pat");
             aGame.add("Sue");
 
-            Random rand = new Random();
+            Random rand;
+            if (args.Length == 0)
+            {
+                rand = new Random();
+            }
+            else
+            {
+                rand = new Random(int.Parse(args[0]));
+            }
 
             do
             {
