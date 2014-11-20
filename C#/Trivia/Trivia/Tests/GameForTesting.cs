@@ -6,7 +6,7 @@ using UglyTrivia;
 
 namespace Trivia.Tests
 {
-    public class GameForTesting: Game
+    public class GameForTesting : Game
     {
         public void PutPlayerInPenaltyBox(int player)
         {
@@ -16,6 +16,11 @@ namespace Trivia.Tests
         public void RemovePlayerFromPenaltyBox(int player)
         {
             inPenaltyBox[player] = false;
+        }
+
+        public bool IsGettingOutOfPenaltyBox
+        {
+            get {return isGettingOutOfPenaltyBox;}
         }
     }
 }

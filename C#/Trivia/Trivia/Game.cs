@@ -22,7 +22,7 @@ namespace UglyTrivia
         LinkedList<string> rockQuestions = new LinkedList<string>();
 
         int currentPlayer = 0;
-        bool isGettingOutOfPenaltyBox;
+        protected bool isGettingOutOfPenaltyBox;
 
         public Game()
         {

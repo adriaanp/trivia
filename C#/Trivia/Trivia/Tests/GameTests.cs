@@ -63,8 +63,7 @@ namespace Trivia.Tests
                 game.PutPlayerInPenaltyBox(0);
                 game.roll(2);
 
-                var output = writer.GetStringBuilder().ToString();
-                Assert.IsTrue(output.Contains("Adriaan is not getting out of the penalty box"));
+                Assert.IsFalse(game.IsGettingOutOfPenaltyBox);
             }
         }
     
