@@ -49,6 +49,24 @@ namespace Trivia.Tests
                 Assert.IsTrue(output.Contains("Adriaan is not getting out of the penalty box"));
             }
         }
+
+        [Test]
+        public void Roll_InPenaltyBoxAndEvenNumber_ShouldNotGetOutOfPenaltyBox2()
+        {
+            using (var writer = new StringWriter())
+            {
+                Console.SetOut(writer);
+                var game = new GameForTesting();
+                game.add("Adriaan");
+                game.add("Player 2");
+
+                game.PutPlayerInPenaltyBox(0);
+                game.roll(2);
+
+                var output = writer.GetStringBuilder().ToString();
+                Assert.IsTrue(output.Contains("Adriaan is not getting out of the penalty box"));
+            }
+        }
     
     }
 }
