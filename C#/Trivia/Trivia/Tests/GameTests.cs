@@ -139,5 +139,15 @@ namespace Trivia.Tests
 
             Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
         }
+
+        [Test]
+        public void Roll_InPenaltyBoxAndGettingOutAndEndOfBoard_ShouldMoveBack12Spaces()
+        {
+            _game.SetPlayerPlace(0, 10);
+            _game.PutPlayerInPenaltyBox(0);
+            _game.roll(5);
+
+            Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
+        }
     }
 }
