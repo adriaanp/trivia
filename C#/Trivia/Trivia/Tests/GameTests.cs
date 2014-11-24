@@ -72,7 +72,7 @@ namespace Trivia.Tests
                 game.wrongAnswer();
                 game.wrongAnswer();
 
-                game.roll(2);
+                game.Roll(2);
 
                 var output = writer.GetStringBuilder().ToString();
                 Assert.IsTrue(output.Contains("Adriaan is not getting out of the penalty box"));
@@ -83,7 +83,7 @@ namespace Trivia.Tests
         public void Roll_InPenaltyBoxAndEvenNumber_ShouldNotGetOutOfPenaltyBox2()
         {
             _game.PutPlayerInPenaltyBox(0);
-            _game.roll(2);
+            _game.Roll(2);
 
             Assert.That(_game.IsGettingOutOfPenaltyBox, Is.False);
         }
@@ -92,7 +92,7 @@ namespace Trivia.Tests
         public void Roll_InPenaltyBoxAndNotEvenNumber_ShouldGetOutOfPenaltyBox()
         {
             _game.PutPlayerInPenaltyBox(0);
-            _game.roll(3);
+            _game.Roll(3);
 
             Assert.That(_game.IsGettingOutOfPenaltyBox, Is.True);
         }
@@ -100,7 +100,7 @@ namespace Trivia.Tests
         [Test]
         public void Roll_NotInPenaltyBox_ShouldAskQuestion()
         {
-            _game.roll(3);
+            _game.Roll(3);
 
             Assert.That(ConsoleOutput(), Is.StringContaining("Question 0"));
         }
@@ -109,7 +109,7 @@ namespace Trivia.Tests
         public void Roll_InPenaltyBoxAndGettingOut_ShouldAskQuestion()
         {
             _game.PutPlayerInPenaltyBox(0);
-            _game.roll(3);
+            _game.Roll(3);
 
             Assert.That(ConsoleOutput(), Is.StringContaining("Question 0"));
         }
@@ -117,7 +117,7 @@ namespace Trivia.Tests
         [Test]
         public void Roll_NotInPenaltyBox_ShouldMovePlaces()
         {
-            _game.roll(3);
+            _game.Roll(3);
 
             Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
         }
@@ -126,7 +126,7 @@ namespace Trivia.Tests
         public void Roll_InPenaltyBoxAndGettingOut_ShouldMovePlaces()
         {
             _game.PutPlayerInPenaltyBox(0);
-            _game.roll(3);
+            _game.Roll(3);
 
             Assert.That(ConsoleOutput(), Is.StringContaining("Question 0"));
         }
@@ -135,7 +135,7 @@ namespace Trivia.Tests
         public void Roll_NotInPenaltyBoxPassEndOfBoard_ShouldMoveBack12Spaces()
         {
             _game.SetPlayerPlace(0, 10);
-            _game.roll(5);
+            _game.Roll(5);
 
             Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
         }
@@ -145,7 +145,7 @@ namespace Trivia.Tests
         {
             _game.SetPlayerPlace(0, 10);
             _game.PutPlayerInPenaltyBox(0);
-            _game.roll(5);
+            _game.Roll(5);
 
             Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
         }
