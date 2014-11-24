@@ -16,10 +16,10 @@ namespace UglyTrivia
 
         protected bool[] inPenaltyBox = new bool[6];
 
-        LinkedList<string> popQuestions = new LinkedList<string>();
-        LinkedList<string> scienceQuestions = new LinkedList<string>();
-        LinkedList<string> sportsQuestions = new LinkedList<string>();
-        LinkedList<string> rockQuestions = new LinkedList<string>();
+        protected LinkedList<string> popQuestions = new LinkedList<string>();
+        protected LinkedList<string> scienceQuestions = new LinkedList<string>();
+        protected LinkedList<string> sportsQuestions = new LinkedList<string>();
+        protected LinkedList<string> rockQuestions = new LinkedList<string>();
 
         int currentPlayer = 0;
         protected bool isGettingOutOfPenaltyBox;
@@ -140,7 +140,7 @@ namespace UglyTrivia
         }
 
 
-        private String currentCategory()
+        protected String currentCategory()
         {
             if (places[currentPlayer] == 0) return "Pop";
             if (places[currentPlayer] == 4) return "Pop";

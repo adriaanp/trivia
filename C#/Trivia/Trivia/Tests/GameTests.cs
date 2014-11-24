@@ -149,5 +149,125 @@ namespace Trivia.Tests
 
             Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
         }
+
+        [Test]
+        public void Game_ShouldHave50QuestionsForEachCategory()
+        {
+            Assert.That(_game.PopQuestions.Count, Is.EqualTo(50));
+            Assert.That(_game.ScienceQuestions.Count, Is.EqualTo(50));
+            Assert.That(_game.SportQuestions.Count, Is.EqualTo(50));
+            Assert.That(_game.RockQuestions.Count, Is.EqualTo(50));
+        }
+
+        // asking question, should reduce # q
+        // 0,4,8 - pop q
+        // 1,5,9 - science q
+        // 2,6,10 - sport q
+        // else rock questions
+
+        [Test]
+        public void Category_PopLocations_ShouldAskPopQuestions([Values(0, 4, 8)] int location)
+        {
+            _game.SetPlayerPlace(0, location);
+            Assert.That(_game.CurrentPlayerCategory(), Is.EqualTo("Pop"));
+        }
+
+        [Test]
+        public void Category_ScienceLocations_ShouldAskScienceQuestions([Values(1,5,9)] int location)
+        {
+            _game.SetPlayerPlace(0, location);
+            Assert.That(_game.CurrentPlayerCategory(), Is.EqualTo("Science"));
+        }
+
+        [Test]
+        public void Category_SportLocations_ShouldAskSportQuestions([Values(2,6,10)] int location)
+        {
+            _game.SetPlayerPlace(0, location);
+            Assert.That(_game.CurrentPlayerCategory(), Is.EqualTo("Sports"));
+        }
+
+        [Test]
+        public void Category_RockLocations_ShouldAskRockQuestions([Values(3, 7, 11)] int location)
+        {
+            _game.SetPlayerPlace(0, location);
+            Assert.That(_game.CurrentPlayerCategory(), Is.EqualTo("Rock"));
+        }
+
+        [Test]
+        public void AskQuestion_PopQuestion_ShouldReduceAndPrintPopOutQuestion()
+        {
+            _game.SetPlayerPlace(0, 0);
+            _game.Roll(0);
+            
+            Assert.That(_game.PopQuestions.Count, Is.EqualTo((49)));
+            Assert.That(ConsoleOutput(), Is.StringContaining("Pop Question 0"));
+        }
+
+        [Test]
+        public void AskQuestion_ScienceQuestion_ShouldReduceAndPrintOutScienceQuestion()
+        {
+            _game.SetPlayerPlace(0, 1);
+            _game.Roll(0);
+
+            Assert.That(_game.ScienceQuestions.Count, Is.EqualTo((49)));
+            Assert.That(ConsoleOutput(), Is.StringContaining("Science Question 0"));
+        }
+
+        [Test]
+        public void AskQuestion_SportQuestion_ShouldReduceAndPrintOutSportQuestion()
+        {
+            _game.SetPlayerPlace(0, 2);
+            _game.Roll(0);
+
+            Assert.That(_game.SportQuestions.Count, Is.EqualTo((49)));
+            Assert.That(ConsoleOutput(), Is.StringContaining("Sports Question 0"));
+        }
+
+        [Test]
+        public void AskQuestion_RockQuestion_ShouldReduceAndPrintOutRockQuestion()
+        {
+            _game.SetPlayerPlace(0, 3);
+            _game.Roll(0);
+
+            Assert.That(_game.RockQuestions.Count, Is.EqualTo((49)));
+            Assert.That(ConsoleOutput(), Is.StringContaining("Rock Question 0"));
+        }
+
+        [Test]
+        public void AskQuestion_PopQuestion_ShouldTakeTopQuestionAndRemoveIt()
+        {
+            _game.SetPlayerPlace(0, 0);
+            _game.Roll(0);
+
+            Assert.That(_game.PopQuestions.First(), Is.EqualTo("Pop Question 1"));
+        }
+
+        [Test]
+        public void AskQuestion_ScienceQuestion_ShouldTakeTopQuestionAndRemoveIt()
+        {
+            _game.SetPlayerPlace(0, 1);
+            _game.Roll(0);
+
+            Assert.That(_game.ScienceQuestions.First(), Is.EqualTo("Science Question 1"));
+        }
+
+        [Test]
+        public void AskQuestion_SportQuestion_ShouldTakeTopQuestionAndRemoveIt()
+        {
+            _game.SetPlayerPlace(0, 2);
+            _game.Roll(0);
+
+            Assert.That(_game.SportQuestions.First(), Is.EqualTo("Sports Question 1"));
+        }
+
+        [Test]
+        public void AskQuestion_RockQuestion_ShouldTakeTopQuestionAndRemoveIt()
+        {
+            _game.SetPlayerPlace(0, 3);
+            _game.Roll(0);
+
+            Assert.That(_game.RockQuestions.First(), Is.EqualTo("Rock Question 1"));
+        }
+
     }
 }

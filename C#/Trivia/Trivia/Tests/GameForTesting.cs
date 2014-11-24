@@ -23,6 +23,26 @@ namespace Trivia.Tests
             get {return isGettingOutOfPenaltyBox;}
         }
 
+        public IList<string> PopQuestions
+        {
+            get { return popQuestions.ToList(); }
+        }
+
+        public IList<string> ScienceQuestions
+        {
+            get { return scienceQuestions.ToList(); }
+        }
+
+        public IList<string> SportQuestions
+        {
+            get { return sportsQuestions.ToList(); }
+        }
+
+        public IList<string> RockQuestions
+        {
+            get { return rockQuestions.ToList(); }
+        }
+
         public int PlayerPlace(int p)
         {
             return places[p];
@@ -31,6 +51,11 @@ namespace Trivia.Tests
         public void SetPlayerPlace(int player, int place)
         {
             places[player] = place;
+        }
+
+        public string CurrentPlayerCategory()
+        {
+            return currentCategory();
         }
     }
 }
