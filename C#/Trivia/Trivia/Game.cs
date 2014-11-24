@@ -11,7 +11,7 @@ namespace UglyTrivia
 
         List<string> players = new List<string>();
 
-        int[] places = new int[6];
+        protected int[] places = new int[6];
         int[] purses = new int[6];
 
         protected bool[] inPenaltyBox = new bool[6];

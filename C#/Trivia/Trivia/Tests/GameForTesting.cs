@@ -22,5 +22,15 @@ namespace Trivia.Tests
         {
             get {return isGettingOutOfPenaltyBox;}
         }
+
+        public int PlayerPlace(int p)
+        {
+            return places[p];
+        }
+
+        public void SetPlayerPlace(int player, int place)
+        {
+            places[player] = place;
+        }
     }
 }

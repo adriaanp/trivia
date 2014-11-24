@@ -11,14 +11,43 @@ namespace Trivia.Tests
     [TestFixture]
     public class GameTests
     {
+        private GameForTesting _game;
+        private StringWriter _writer;
+
+        [SetUp]
+        public void Setup()
+        {
+            _writer = new StringWriter();
+            Console.SetOut(_writer);
+            SetupGame();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _writer.Dispose();
+        }
+
+        private string ConsoleOutput()
+        {
+            return _writer.GetStringBuilder().ToString();
+        }
+
+        private void SetupGame()
+        {
+            _game = new GameForTesting();
+            _game.add("Adriaan");
+            _game.add("Player 2");
+        }
+
         [Test]
         public void Add_Name_ShouldIncreasePlayerCount()
         {
             var game = new Game();
             game.add("Adriaan");
-            Assert.AreEqual(1, game.howManyPlayers());
+            Assert.That(game.howManyPlayers(), Is.EqualTo(1));
             game.add("Player 2");
-            Assert.AreEqual(2, game.howManyPlayers());
+            Assert.That(game.howManyPlayers(), Is.EqualTo(2));
         }
 
         // if in penalty box
@@ -53,19 +82,62 @@ namespace Trivia.Tests
         [Test]
         public void Roll_InPenaltyBoxAndEvenNumber_ShouldNotGetOutOfPenaltyBox2()
         {
-            using (var writer = new StringWriter())
-            {
-                Console.SetOut(writer);
-                var game = new GameForTesting();
-                game.add("Adriaan");
-                game.add("Player 2");
+            _game.PutPlayerInPenaltyBox(0);
+            _game.roll(2);
 
-                game.PutPlayerInPenaltyBox(0);
-                game.roll(2);
-
-                Assert.IsFalse(game.IsGettingOutOfPenaltyBox);
-            }
+            Assert.That(_game.IsGettingOutOfPenaltyBox, Is.False);
         }
-    
+
+        [Test]
+        public void Roll_InPenaltyBoxAndNotEvenNumber_ShouldGetOutOfPenaltyBox()
+        {
+            _game.PutPlayerInPenaltyBox(0);
+            _game.roll(3);
+
+            Assert.That(_game.IsGettingOutOfPenaltyBox, Is.True);
+        }
+
+        [Test]
+        public void Roll_NotInPenaltyBox_ShouldAskQuestion()
+        {
+            _game.roll(3);
+
+            Assert.That(ConsoleOutput(), Is.StringContaining("Question 0"));
+        }
+
+        [Test]
+        public void Roll_InPenaltyBoxAndGettingOut_ShouldAskQuestion()
+        {
+            _game.PutPlayerInPenaltyBox(0);
+            _game.roll(3);
+
+            Assert.That(ConsoleOutput(), Is.StringContaining("Question 0"));
+        }
+
+        [Test]
+        public void Roll_NotInPenaltyBox_ShouldMovePlaces()
+        {
+            _game.roll(3);
+
+            Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
+        }
+
+        [Test]
+        public void Roll_InPenaltyBoxAndGettingOut_ShouldMovePlaces()
+        {
+            _game.PutPlayerInPenaltyBox(0);
+            _game.roll(3);
+
+            Assert.That(ConsoleOutput(), Is.StringContaining("Question 0"));
+        }
+
+        [Test]
+        public void Roll_NotInPenaltyBoxPassEndOfBoard_ShouldMoveBack12Spaces()
+        {
+            _game.SetPlayerPlace(0, 10);
+            _game.roll(5);
+
+            Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
+        }
     }
 }
