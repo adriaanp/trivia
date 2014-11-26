@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Rhino.Mocks;
 using UglyTrivia;
 
 namespace Trivia.Tests
@@ -269,5 +270,17 @@ namespace Trivia.Tests
             Assert.That(_game.RockQuestions.First(), Is.EqualTo("Rock Question 1"));
         }
 
+
+/*
+        [Test]
+        public void NewGame_ShouldCallQuestionProviderGetQuestionsForGame()
+        {
+            var provider = MockRepository.GenerateMock<IQuestionProvider>();
+
+            var game = new Game(provider);
+
+            provider.AssertWasCalled(p => p.GetQuestionsForGame());
+        }
+*/
     }
 }
