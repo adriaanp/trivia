@@ -23,24 +23,25 @@ namespace Trivia.Tests
             get {return isGettingOutOfPenaltyBox;}
         }
 
+        //TODO: Remove, is covered in question tests
         public IList<string> PopQuestions
         {
-            get { return popQuestions.ToList(); }
+            get { return _questions["Pop"].ToList(); }
         }
 
         public IList<string> ScienceQuestions
         {
-            get { return scienceQuestions.ToList(); }
+            get { return _questions["Science"].ToList(); }
         }
 
         public IList<string> SportQuestions
         {
-            get { return sportsQuestions.ToList(); }
+            get { return _questions["Sports"].ToList(); }
         }
 
         public IList<string> RockQuestions
         {
-            get { return rockQuestions.ToList(); }
+            get { return _questions["Rock"].ToList(); }
         }
 
         public int PlayerPlace(int p)

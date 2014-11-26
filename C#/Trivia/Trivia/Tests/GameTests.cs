@@ -271,7 +271,6 @@ namespace Trivia.Tests
         }
 
 
-/*
         [Test]
         public void NewGame_ShouldCallQuestionProviderGetQuestionsForGame()
         {
@@ -281,6 +280,5 @@ namespace Trivia.Tests
 
             provider.AssertWasCalled(p => p.GetQuestionsForGame());
         }
-*/
     }
 }
