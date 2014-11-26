@@ -58,6 +58,16 @@ namespace Trivia.Tests
             Assert.That(questions["Pop"].Count, Is.EqualTo(1));
         }
 
+        [Test]
+        public void GetNextCategoryQuestion_ShouldTakeTopOneAndRemoveIt()
+        {
+            var questions = new Questions();
+            questions.AddCategoryQuestions("Pop", new[] { "Pop Question 1", "Pop Question 2" });
+
+            var question = questions.GetNextCategoryQuestion("Pop");
+
+            Assert.That(questions["Pop"].First(), Is.EqualTo("Pop Question 2"));
+        }
         //questions.Reset();
         //questions.AddCategoryQuestions("Pop", Questions); create 50 questions?
         //var q = questions.GetNextAndRemoveQuestionFromCategory("Pop");

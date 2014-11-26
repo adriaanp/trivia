@@ -151,15 +151,6 @@ namespace Trivia.Tests
             Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
         }
 
-        [Test]
-        public void Game_ShouldHave50QuestionsForEachCategory()
-        {
-            Assert.That(_game.PopQuestions.Count, Is.EqualTo(50));
-            Assert.That(_game.ScienceQuestions.Count, Is.EqualTo(50));
-            Assert.That(_game.SportQuestions.Count, Is.EqualTo(50));
-            Assert.That(_game.RockQuestions.Count, Is.EqualTo(50));
-        }
-
         // asking question, should reduce # q
         // 0,4,8 - pop q
         // 1,5,9 - science q
@@ -195,81 +186,40 @@ namespace Trivia.Tests
         }
 
         [Test]
-        public void AskQuestion_PopQuestion_ShouldReduceAndPrintPopOutQuestion()
+        public void AskQuestion_PopQuestion_ShouldPrintPopOutQuestion()
         {
             _game.SetPlayerPlace(0, 0);
             _game.Roll(0);
             
-            Assert.That(_game.PopQuestions.Count, Is.EqualTo((49)));
             Assert.That(ConsoleOutput(), Is.StringContaining("Pop Question 0"));
         }
 
         [Test]
-        public void AskQuestion_ScienceQuestion_ShouldReduceAndPrintOutScienceQuestion()
+        public void AskQuestion_ScienceQuestion_ShouldPrintOutScienceQuestion()
         {
             _game.SetPlayerPlace(0, 1);
             _game.Roll(0);
 
-            Assert.That(_game.ScienceQuestions.Count, Is.EqualTo((49)));
             Assert.That(ConsoleOutput(), Is.StringContaining("Science Question 0"));
         }
 
         [Test]
-        public void AskQuestion_SportQuestion_ShouldReduceAndPrintOutSportQuestion()
+        public void AskQuestion_SportQuestion_ShouldPrintOutSportQuestion()
         {
             _game.SetPlayerPlace(0, 2);
             _game.Roll(0);
 
-            Assert.That(_game.SportQuestions.Count, Is.EqualTo((49)));
             Assert.That(ConsoleOutput(), Is.StringContaining("Sports Question 0"));
         }
 
         [Test]
-        public void AskQuestion_RockQuestion_ShouldReduceAndPrintOutRockQuestion()
+        public void AskQuestion_RockQuestion_ShouldPrintOutRockQuestion()
         {
             _game.SetPlayerPlace(0, 3);
             _game.Roll(0);
 
-            Assert.That(_game.RockQuestions.Count, Is.EqualTo((49)));
             Assert.That(ConsoleOutput(), Is.StringContaining("Rock Question 0"));
         }
-
-        [Test]
-        public void AskQuestion_PopQuestion_ShouldTakeTopQuestionAndRemoveIt()
-        {
-            _game.SetPlayerPlace(0, 0);
-            _game.Roll(0);
-
-            Assert.That(_game.PopQuestions.First(), Is.EqualTo("Pop Question 1"));
-        }
-
-        [Test]
-        public void AskQuestion_ScienceQuestion_ShouldTakeTopQuestionAndRemoveIt()
-        {
-            _game.SetPlayerPlace(0, 1);
-            _game.Roll(0);
-
-            Assert.That(_game.ScienceQuestions.First(), Is.EqualTo("Science Question 1"));
-        }
-
-        [Test]
-        public void AskQuestion_SportQuestion_ShouldTakeTopQuestionAndRemoveIt()
-        {
-            _game.SetPlayerPlace(0, 2);
-            _game.Roll(0);
-
-            Assert.That(_game.SportQuestions.First(), Is.EqualTo("Sports Question 1"));
-        }
-
-        [Test]
-        public void AskQuestion_RockQuestion_ShouldTakeTopQuestionAndRemoveIt()
-        {
-            _game.SetPlayerPlace(0, 3);
-            _game.Roll(0);
-
-            Assert.That(_game.RockQuestions.First(), Is.EqualTo("Rock Question 1"));
-        }
-
 
         [Test]
         public void NewGame_ShouldCallQuestionProviderGetQuestionsForGame()
