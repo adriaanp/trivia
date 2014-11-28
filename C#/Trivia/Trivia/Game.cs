@@ -11,6 +11,7 @@ namespace UglyTrivia
 
         private readonly IQuestionProvider _questionProvider;
         protected readonly Questions _questions;
+        private readonly GameBoard _board;
 
         public Game()
             : this(new QuestionProvider())
@@ -21,6 +22,7 @@ namespace UglyTrivia
         {
             _questionProvider = questionProvider;
             _questions = questionProvider.GetQuestionsForGame();
+            _board = new GameBoard();
         }
 
         List<string> players = new List<string>();
@@ -75,7 +77,7 @@ namespace UglyTrivia
             Console.WriteLine(players[currentPlayer]
                     + "'s new location is "
                     + places[currentPlayer]);
-            Console.WriteLine("The category is " + currentCategory());
+            Console.WriteLine("The category is " + GetCurrentPlayerCategory());
             askQuestion();
         }
 
@@ -110,23 +112,15 @@ namespace UglyTrivia
 
         private void askQuestion()
         {
-            var nextQuestion = _questions.GetNextCategoryQuestion(currentCategory());
+            var nextQuestion = _questions.GetNextCategoryQuestion(GetCurrentPlayerCategory());
             Console.WriteLine(nextQuestion);
         }
 
 
-        protected String currentCategory()
+        protected String GetCurrentPlayerCategory()
         {
-            if (places[currentPlayer] == 0) return "Pop";
-            if (places[currentPlayer] == 4) return "Pop";
-            if (places[currentPlayer] == 8) return "Pop";
-            if (places[currentPlayer] == 1) return "Science";
-            if (places[currentPlayer] == 5) return "Science";
-            if (places[currentPlayer] == 9) return "Science";
-            if (places[currentPlayer] == 2) return "Sports";
-            if (places[currentPlayer] == 6) return "Sports";
-            if (places[currentPlayer] == 10) return "Sports";
-            return "Rock";
+            var currentTile = _board.Tiles.ElementAt(places[currentPlayer]);
+            return currentTile.Category;
         }
 
         public bool wasCorrectlyAnswered()

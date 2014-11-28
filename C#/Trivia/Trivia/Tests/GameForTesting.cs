@@ -35,7 +35,7 @@ namespace Trivia.Tests
 
         public string CurrentPlayerCategory()
         {
-            return currentCategory();
+            return GetCurrentPlayerCategory();
         }
     }
 }
