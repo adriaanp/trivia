@@ -12,12 +12,14 @@ namespace Trivia
         public Tile CurrentTile { get; set; }
         public int Coins { get; private set; }
         public bool IsInPenaltyBox { get; set; }
+        public bool IsGettingOutOfPenaltyBox { get; set; }
 
         public Player(string name, Tile startingTile)
         {
             Name = name;
             CurrentTile = startingTile;
             Coins = 0;
+            IsInPenaltyBox = false;
         }
 
         public void AddCoins(int coins)

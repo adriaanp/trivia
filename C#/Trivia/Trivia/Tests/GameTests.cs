@@ -12,7 +12,7 @@ namespace Trivia.Tests
     [TestFixture]
     public class GameTests
     {
-        private GameForTesting _game;
+        private Game _game;
         private StringWriter _writer;
 
         [SetUp]
@@ -36,19 +36,19 @@ namespace Trivia.Tests
 
         private void SetupGame()
         {
-            _game = new GameForTesting();
-            _game.add("Adriaan");
-            _game.add("Player 2");
+            _game = new Game();
+            _game.AddPlayer("Adriaan");
+            _game.AddPlayer("Player 2");
         }
 
         [Test]
         public void Add_Name_ShouldIncreasePlayerCount()
         {
             var game = new Game();
-            game.add("Adriaan");
-            Assert.That(game.howManyPlayers(), Is.EqualTo(1));
-            game.add("Player 2");
-            Assert.That(game.howManyPlayers(), Is.EqualTo(2));
+            game.AddPlayer("Adriaan");
+            Assert.That(game.HowManyPlayers(), Is.EqualTo(1));
+            game.AddPlayer("Player 2");
+            Assert.That(game.HowManyPlayers(), Is.EqualTo(2));
         }
 
         // if in penalty box
@@ -67,8 +67,8 @@ namespace Trivia.Tests
             {
                 Console.SetOut(writer);
                 var game = new Game();
-                game.add("Adriaan");
-                game.add("Player 2");
+                game.AddPlayer("Adriaan");
+                game.AddPlayer("Player 2");
 
                 game.wrongAnswer();
                 game.wrongAnswer();
@@ -83,19 +83,19 @@ namespace Trivia.Tests
         [Test]
         public void Roll_InPenaltyBoxAndEvenNumber_ShouldNotGetOutOfPenaltyBox2()
         {
-            _game.PutPlayerInPenaltyBox(0);
+            _game.CurrentPlayer.IsInPenaltyBox = true;
             _game.Roll(2);
 
-            Assert.That(_game.IsGettingOutOfPenaltyBox, Is.False);
+            Assert.That(_game.CurrentPlayer.IsGettingOutOfPenaltyBox, Is.False);
         }
 
         [Test]
         public void Roll_InPenaltyBoxAndNotEvenNumber_ShouldGetOutOfPenaltyBox()
         {
-            _game.PutPlayerInPenaltyBox(0);
+            _game.CurrentPlayer.IsInPenaltyBox = true;
             _game.Roll(3);
 
-            Assert.That(_game.IsGettingOutOfPenaltyBox, Is.True);
+            Assert.That(_game.CurrentPlayer.IsGettingOutOfPenaltyBox, Is.True);
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace Trivia.Tests
         [Test]
         public void Roll_InPenaltyBoxAndGettingOut_ShouldAskQuestion()
         {
-            _game.PutPlayerInPenaltyBox(0);
+            _game.CurrentPlayer.IsInPenaltyBox = true;
             _game.Roll(3);
 
             Assert.That(ConsoleOutput(), Is.StringContaining("Question 0"));
@@ -120,75 +120,22 @@ namespace Trivia.Tests
         {
             _game.Roll(3);
 
-            Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
+            Assert.That(_game.CurrentPlayer.CurrentTile.Position, Is.EqualTo(4));
         }
 
         [Test]
         public void Roll_InPenaltyBoxAndGettingOut_ShouldMovePlaces()
         {
-            _game.PutPlayerInPenaltyBox(0);
+            _game.CurrentPlayer.IsInPenaltyBox = true;
             _game.Roll(3);
 
             Assert.That(ConsoleOutput(), Is.StringContaining("Question 0"));
         }
 
         [Test]
-        public void Roll_NotInPenaltyBoxPassEndOfBoard_ShouldMoveBack12Spaces()
-        {
-            _game.SetPlayerPlace(0, 10);
-            _game.Roll(5);
-
-            Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
-        }
-
-        [Test]
-        public void Roll_InPenaltyBoxAndGettingOutAndEndOfBoard_ShouldMoveBack12Spaces()
-        {
-            _game.SetPlayerPlace(0, 10);
-            _game.PutPlayerInPenaltyBox(0);
-            _game.Roll(5);
-
-            Assert.That(_game.PlayerPlace(0), Is.EqualTo(3));
-        }
-
-        // asking question, should reduce # q
-        // 0,4,8 - pop q
-        // 1,5,9 - science q
-        // 2,6,10 - sport q
-        // else rock questions
-
-        [Test]
-        public void Category_PopLocations_ShouldAskPopQuestions([Values(0, 4, 8)] int location)
-        {
-            _game.SetPlayerPlace(0, location);
-            Assert.That(_game.CurrentPlayerCategory(), Is.EqualTo("Pop"));
-        }
-
-        [Test]
-        public void Category_ScienceLocations_ShouldAskScienceQuestions([Values(1,5,9)] int location)
-        {
-            _game.SetPlayerPlace(0, location);
-            Assert.That(_game.CurrentPlayerCategory(), Is.EqualTo("Science"));
-        }
-
-        [Test]
-        public void Category_SportLocations_ShouldAskSportQuestions([Values(2,6,10)] int location)
-        {
-            _game.SetPlayerPlace(0, location);
-            Assert.That(_game.CurrentPlayerCategory(), Is.EqualTo("Sports"));
-        }
-
-        [Test]
-        public void Category_RockLocations_ShouldAskRockQuestions([Values(3, 7, 11)] int location)
-        {
-            _game.SetPlayerPlace(0, location);
-            Assert.That(_game.CurrentPlayerCategory(), Is.EqualTo("Rock"));
-        }
-
-        [Test]
         public void AskQuestion_PopQuestion_ShouldPrintPopOutQuestion()
         {
-            _game.SetPlayerPlace(0, 0);
+            _game.CurrentPlayer.CurrentTile = _game.Board.Tiles.First();
             _game.Roll(0);
             
             Assert.That(ConsoleOutput(), Is.StringContaining("Pop Question 0"));
@@ -197,7 +144,7 @@ namespace Trivia.Tests
         [Test]
         public void AskQuestion_ScienceQuestion_ShouldPrintOutScienceQuestion()
         {
-            _game.SetPlayerPlace(0, 1);
+            _game.CurrentPlayer.CurrentTile = _game.Board.Tiles.ElementAt(1);
             _game.Roll(0);
 
             Assert.That(ConsoleOutput(), Is.StringContaining("Science Question 0"));
@@ -206,7 +153,7 @@ namespace Trivia.Tests
         [Test]
         public void AskQuestion_SportQuestion_ShouldPrintOutSportQuestion()
         {
-            _game.SetPlayerPlace(0, 2);
+            _game.CurrentPlayer.CurrentTile = _game.Board.Tiles.ElementAt(2);
             _game.Roll(0);
 
             Assert.That(ConsoleOutput(), Is.StringContaining("Sports Question 0"));
@@ -215,7 +162,7 @@ namespace Trivia.Tests
         [Test]
         public void AskQuestion_RockQuestion_ShouldPrintOutRockQuestion()
         {
-            _game.SetPlayerPlace(0, 3);
+            _game.CurrentPlayer.CurrentTile = _game.Board.Tiles.ElementAt(3);
             _game.Roll(0);
 
             Assert.That(ConsoleOutput(), Is.StringContaining("Rock Question 0"));

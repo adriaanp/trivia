@@ -98,7 +98,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestionProvider.cs" />
     <Compile Include="Tests\BoardGameTests.cs" />
-    <Compile Include="Tests\GameForTesting.cs" />
     <Compile Include="Tests\GameTests.cs" />
     <Compile Include="Tests\GoldenMaster.cs" />
     <Compile Include="Questions.cs" />
