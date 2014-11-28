@@ -69,5 +69,15 @@ namespace Trivia.Tests
 
             var nextTile = board.GetNextTile(new Tile(1, "Test"), 5);
         }
+
+        [Test]
+        public void StartingTile_ShouldReturnFirstTile()
+        {
+            var board = new GameBoard();
+
+            var startTile = board.StartingTile;
+
+            Assert.That(startTile, Is.EqualTo(board.Tiles.ElementAt(0)));
+        }
     }
 }

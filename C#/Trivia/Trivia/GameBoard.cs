@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Trivia
 {
@@ -10,6 +11,11 @@ namespace Trivia
         public IEnumerable<Tile> Tiles
         {
             get { return _tiles; }
+        }
+
+        public Tile StartingTile
+        {
+            get { return _tiles.First(); }
         }
 
         public GameBoard()
