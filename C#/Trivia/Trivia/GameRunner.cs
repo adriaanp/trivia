@@ -37,11 +37,11 @@ namespace Trivia
 
                 if (rand.Next(9) == 7)
                 {
-                    notAWinner = aGame.wrongAnswer();
+                    notAWinner = aGame.QuestionAnsweredIncorrectly();
                 }
                 else
                 {
-                    notAWinner = aGame.wasCorrectlyAnswered();
+                    notAWinner = aGame.QuestionAnsweredCorrectly();
                 }
 
 

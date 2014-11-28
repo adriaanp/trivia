@@ -70,8 +70,8 @@ namespace Trivia.Tests
                 game.AddPlayer("Adriaan");
                 game.AddPlayer("Player 2");
 
-                game.wrongAnswer();
-                game.wrongAnswer();
+                game.QuestionAnsweredIncorrectly();
+                game.QuestionAnsweredIncorrectly();
 
                 game.Roll(2);
 

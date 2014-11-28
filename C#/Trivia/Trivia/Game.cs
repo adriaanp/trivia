@@ -8,9 +8,10 @@ namespace UglyTrivia
 {
     public class Game
     {
-
         private readonly IQuestionProvider _questionProvider;
+        //TODO: move questions to game board or need to find different way of question categories
         protected readonly Questions _questions;
+        //TODO: Break dependency
         private readonly GameBoard _board;
         private readonly List<Player> _players = new List<Player>();
 
@@ -28,12 +29,12 @@ namespace UglyTrivia
 
         int currentPlayerMarker = 0;
 
-        public bool isPlayable()
+        public bool IsPlayable()
         {
             return (HowManyPlayers() >= 2);
         }
 
-        public bool AddPlayer(String playerName)
+        public bool AddPlayer(string playerName)
         {
             _players.Add(new Player(playerName, _board.StartingTile));
 
@@ -43,12 +44,7 @@ namespace UglyTrivia
         }
 
         public Player CurrentPlayer { get { return _players[currentPlayerMarker]; } }
-
-        public IEnumerable<Player> Players
-        {
-            get { return _players; }
-        }
-
+        public IEnumerable<Player> Players { get { return _players; } }
         public GameBoard Board { get { return _board; } }
 
         public int HowManyPlayers()
@@ -66,7 +62,6 @@ namespace UglyTrivia
                 MoveCurrentPlayer(roll);
                 AskCurrentPlayerCategoryQuestion();
             }
-
         }
 
         private void AskCurrentPlayerCategoryQuestion()
@@ -74,8 +69,8 @@ namespace UglyTrivia
             Console.WriteLine(CurrentPlayer.Name
                     + "'s new location is "
                     + (CurrentPlayer.CurrentTile.Position - 1));
-            Console.WriteLine("The category is " + GetCurrentPlayerCategory());
-            askQuestion();
+            Console.WriteLine("The category is " + CurrentPlayer.CurrentTile.Category);
+            AskQuestion();
         }
 
         private void MoveCurrentPlayer(int roll)
@@ -94,6 +89,7 @@ namespace UglyTrivia
         {
             if (roll % 2 != 0)
             {
+                //TODO: flag not really necessary
                 CurrentPlayer.IsGettingOutOfPenaltyBox = true;
                 Console.WriteLine(CurrentPlayer.Name + " is getting out of the penalty box");
                 return false;
@@ -106,32 +102,22 @@ namespace UglyTrivia
             }
         }
 
-        private void askQuestion()
+        private void AskQuestion()
         {
-            var nextQuestion = _questions.GetNextCategoryQuestion(GetCurrentPlayerCategory());
+            var nextQuestion = _questions.GetNextCategoryQuestion(CurrentPlayer.CurrentTile.Category);
             Console.WriteLine(nextQuestion);
         }
 
-
-        protected String GetCurrentPlayerCategory()
-        {
-            return CurrentPlayer.CurrentTile.Category;
-        }
-
-        public bool wasCorrectlyAnswered()
+        public bool QuestionAnsweredCorrectly()
         {
             if (CurrentPlayer.IsInPenaltyBox)
             {
                 if (CurrentPlayer.IsGettingOutOfPenaltyBox)
                 {
                     Console.WriteLine("Answer was correct!!!!");
-                    CurrentPlayer.AddCoins(1);
-                    Console.WriteLine(CurrentPlayer.Name
-                            + " now has "
-                            + CurrentPlayer.Coins
-                            + " Gold Coins.");
+                    GiveCurrentPlayerReward();
 
-                    bool winner = didPlayerWin();
+                    bool winner = DidPlayerWin();
                     NextPlayerTurn();
 
                     return winner;
@@ -145,17 +131,22 @@ namespace UglyTrivia
             else
             {
                 Console.WriteLine("Answer was corrent!!!!");
-                CurrentPlayer.AddCoins(1);
-                Console.WriteLine(CurrentPlayer.Name
-                        + " now has "
-                        + CurrentPlayer.Coins
-                        + " Gold Coins.");
+                GiveCurrentPlayerReward();
 
-                bool winner = didPlayerWin();
+                bool winner = DidPlayerWin();
                 NextPlayerTurn();
 
                 return winner;
             }
+        }
+
+        private void GiveCurrentPlayerReward()
+        {
+            CurrentPlayer.AddCoins(1);
+            Console.WriteLine(CurrentPlayer.Name
+                              + " now has "
+                              + CurrentPlayer.Coins
+                              + " Gold Coins.");
         }
 
         private void NextPlayerTurn()
@@ -164,7 +155,7 @@ namespace UglyTrivia
             if (currentPlayerMarker == _players.Count) currentPlayerMarker = 0;
         }
 
-        public bool wrongAnswer()
+        public bool QuestionAnsweredIncorrectly()
         {
             Console.WriteLine("Question was incorrectly answered");
             Console.WriteLine(CurrentPlayer.Name + " was sent to the penalty box");
@@ -174,7 +165,7 @@ namespace UglyTrivia
             return true;
         }
 
-        private bool didPlayerWin()
+        private bool DidPlayerWin()
         {
             return CurrentPlayer.Coins != 6;
         }
